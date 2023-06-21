@@ -1,0 +1,7 @@
+
+测试 命令行
+
+-n --gen-onefile  -o output_csharp output_idl/worldtype.fbs  --gen-object-api
+
+-b -o output_bin output_idl/advancetype.fbs  output_json/advancetype.txt
+-b -o output_bin output_idl/story.fbs story.txt

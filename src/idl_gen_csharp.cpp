@@ -2442,6 +2442,29 @@ class CSharpGenerator : public BaseGenerator {
         }
       }
       code += "  public " + type_name + " " + camel_name + " { get; set; }\n";
+
+      // Generate Get
+      if (field.value.type.struct_def != nullptr) {
+        StructDef *rowStructDef =
+            static_cast<StructDef *>(field.value.type.struct_def);
+        if (rowStructDef != nullptr) {
+          const auto id = rowStructDef->fields.Lookup("Id");
+          if (id != nullptr) {
+            auto idTypeName = GenTypeGet(id->value.type);
+            auto rowType = GenTypeGet(field.value.type);
+            rowType = GenTypeName_ObjectAPI(rowType, opts);
+            code += "\n  public " + rowType + " Get(" + idTypeName + " id) {\n";
+            code +=
+                "    for (int i = 0; i < " + camel_name + ".Count; i++) {\n";
+            code += "      var data = " + camel_name + "[i];\n";
+            code += "      if (data.Id == id) return data;\n";
+            code += "    }\n";
+            code += "    Log.E(\"Cannot find \", id, \" in " + camel_name + "\");\n";
+            code += "    return null;\n";
+            code += "  }\n";
+          }
+        }
+      }
     }
     // Generate Constructor
     code += "\n";
