@@ -1951,7 +1951,8 @@ class CSharpGenerator : public BaseGenerator {
         case BASE_TYPE_VECTOR:
           if (field.value.type.element == BASE_TYPE_UNION) {
             code += start + "new " +
-                    GenTypeGet_ObjectAPI(field.value.type, opts) + "();\n";
+                    GenTypeGet_ObjectAPI(field.value.type, opts) + "(this." +
+                    camel_name + "Length);\n";
             code += "    for (var _j = 0; _j < this." + camel_name +
                     "Length; ++_j) {\n";
             GenUnionUnPack_ObjectAPI(*field.value.type.enum_def, code_ptr,
@@ -1960,7 +1961,8 @@ class CSharpGenerator : public BaseGenerator {
           } else if (field.value.type.element != BASE_TYPE_UTYPE) {
             auto fixed = field.value.type.struct_def == nullptr;
             code += start + "new " +
-                    GenTypeGet_ObjectAPI(field.value.type, opts) + "();\n";
+                    GenTypeGet_ObjectAPI(field.value.type, opts) + "(this." +
+                    camel_name + "Length);\n";
             code += "    for (var _j = 0; _j < this." + camel_name +
                     "Length; ++_j) {";
             code += "_o." + camel_name + ".Add(";
